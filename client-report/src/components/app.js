@@ -182,9 +182,9 @@ class App extends React.Component {
         return this.getComments(report.conversation_id, conv.strict_moderation);
       });
     });
-    // const groupDemographicsPromise = reportPromise.then((report) => {
-    //   return this.getGroupDemographics(report.conversation_id);
-    // });
+    const groupDemographicsPromise = reportPromise.then((report) => {
+      return this.getGroupDemographics(report.conversation_id);
+    });
     //const conversationStatsPromise = reportPromise.then((report) => {
     //return this.getConversationStats(report.conversation_id)
     //});
@@ -205,7 +205,7 @@ class App extends React.Component {
       reportPromise,
       mathPromise,
       commentsPromise,
-      // groupDemographicsPromise,
+      groupDemographicsPromise,
       participantsOfInterestPromise,
       matrixPromise,
       conversationPromise,
@@ -216,7 +216,7 @@ class App extends React.Component {
           report,
           mathResult,
           comments,
-          // groupDemographics,
+          groupDemographics,
           participants,
           correlationHClust,
           conversation,
@@ -375,7 +375,7 @@ class App extends React.Component {
             return c.tid;
           }),
           comments: comments,
-          // demographics: groupDemographics,
+          demographics: groupDemographics,
           participants: participants,
           conversation: conversation,
           ptptCount: ptptCount,
@@ -504,7 +504,7 @@ class App extends React.Component {
             comments={this.state.comments}
             ptptCount={this.state.ptptCount}
             ptptCountTotal={this.state.ptptCountTotal}
-            // demographics={this.state.demographics}
+            demographics={this.state.demographics}
             conversation={this.state.conversation}
             voteColors={this.state.voteColors}
           />
@@ -534,7 +534,7 @@ class App extends React.Component {
           <ParticipantGroups
             comments={this.state.comments}
             conversation={this.state.conversation}
-            // demographics={this.state.demographics}
+            demographics={this.state.demographics}
             ptptCount={this.state.ptptCount}
             groupNames={this.state.groupNames}
             formatTid={this.state.formatTid}

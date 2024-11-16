@@ -80,7 +80,7 @@ class ParticipantGroups extends React.Component {
               comments={this.props.comments}
               gid={gid}
               conversation={this.props.conversation}
-              //demographicsForGroup={this.props.demographics[gid]}
+              demographicsForGroup={this.props.demographics[gid]}
               groupComments={groupComments}
               groupName={this.props.groupNames[gid]}
               groupVotesForThisGroup={this.props.math["group-votes"][gid]}

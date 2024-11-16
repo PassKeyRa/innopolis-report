@@ -65,10 +65,9 @@ CREATE TABLE users(
     -- TODO After testing failure cases with 10, use this:
     -- 2147483647  (2**32/2 -1)
     uid SERIAL,
-    hname VARCHAR(746), --  human name (the token 'name' returns too many results when grepped) 746 is the longest name on records: (Wolfe+585, Senior.) Some cultures have more than two names, and some people don't even have two names. for example: http://s.ai/dl_redacted_small.png
     created BIGINT DEFAULT now_as_millis(),
     username VARCHAR(128),
-    email VARCHAR(256), -- http://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
+    address VARCHAR(256),
     is_owner BOOLEAN DEFAULT FALSE, -- has the ability to start conversations
     zinvite VARCHAR(300), -- The initial zinvite used to create the user, can be used for attribution (may be null)
     oinvite VARCHAR(300), -- The oinvite used to create the user, or to upgrade the user to a conversation owner.
@@ -76,14 +75,14 @@ CREATE TABLE users(
     site_id VARCHAR(256) NOT NULL DEFAULT random_polis_site_id(), -- TODO add a separate table for this, once we have people with multiple sites
     site_owner BOOLEAN DEFAULT TRUE,
     -- UNIQUE (site_id), -- not unique, since many usres can be admins for the same site_id
-    UNIQUE (email),
+    UNIQUE (address),
     UNIQUE (uid)
 );
 CREATE INDEX users_uid_idx ON users USING btree (uid);
 -- alter table users add constraint users_site_id_index UNIQUE(site_id);
 
 
-CREATE TABLE site_domain_whitelist(
+/*CREATE TABLE site_domain_whitelist(
     site_id VARCHAR(256) NOT NULL,
     domain_whitelist VARCHAR(999),
     domain_whitelist_override_key VARCHAR(999),
@@ -134,7 +133,7 @@ CREATE TABLE apikeysndvweifu (
 CREATE INDEX apikeysndvweifu_uid_idx ON apikeysndvweifu USING btree (uid);
 CREATE INDEX apikeysndvweifu_apikey_idx ON apikeysndvweifu USING btree (apikey);
 
-
+*/
 
 
 
@@ -158,7 +157,7 @@ CREATE INDEX apikeysndvweifu_apikey_idx ON apikeysndvweifu USING btree (apikey);
 
 --CREATE TABLE org_member_metadata_types (
 
-CREATE TABLE courses(
+/*CREATE TABLE courses(
     course_id SERIAL,
     topic VARCHAR(1000),
     description VARCHAR(1000),
@@ -168,7 +167,7 @@ CREATE TABLE courses(
     UNIQUE(course_invite),
     UNIQUE(course_id)
 );
-CREATE UNIQUE INDEX course_id_idx ON courses USING btree (course_id);
+CREATE UNIQUE INDEX course_id_idx ON courses USING btree (course_id);*/
 
 
 CREATE TABLE conversations(
@@ -177,46 +176,46 @@ CREATE TABLE conversations(
     zid SERIAL,
     topic VARCHAR(1000), -- default as time in the presentation layer
     description VARCHAR(50000),
-    link_url VARCHAR(9999), -- a url to some other page
-    parent_url VARCHAR(9999), -- url of this embedded conversation's parent frame
-    upvotes INTEGER NOT NULL DEFAULT 1, -- upvotes for the conversation as a whole
+    --link_url VARCHAR(9999), -- a url to some other page
+    --parent_url VARCHAR(9999), -- url of this embedded conversation's parent frame
+    --upvotes INTEGER NOT NULL DEFAULT 1, -- upvotes for the conversation as a whole
     participant_count INTEGER DEFAULT 0,
-    is_anon BOOLEAN DEFAULT TRUE,
-    is_active BOOLEAN DEFAULT FALSE,
-    is_draft BOOLEAN DEFAULT FALSE, -- TODO check default
-    is_public BOOLEAN DEFAULT TRUE,
-    is_data_open BOOLEAN DEFAULT FALSE, -- anyone can export a data dump
-    profanity_filter BOOLEAN DEFAULT TRUE,
-    spam_filter BOOLEAN DEFAULT TRUE,
-    strict_moderation BOOLEAN DEFAULT FALSE,
+    --is_anon BOOLEAN DEFAULT TRUE,
+    --is_active BOOLEAN DEFAULT FALSE,
+    --is_draft BOOLEAN DEFAULT FALSE, -- TODO check default
+    --is_public BOOLEAN DEFAULT TRUE,
+    --is_data_open BOOLEAN DEFAULT FALSE, -- anyone can export a data dump
+    --profanity_filter BOOLEAN DEFAULT TRUE,
+    --spam_filter BOOLEAN DEFAULT TRUE,
+    --strict_moderation BOOLEAN DEFAULT FALSE,
     prioritize_seed BOOLEAN DEFAULT FALSE,
-    vis_type INTEGER NOT NULL DEFAULT 0, -- for now, vis=1 is on, vis=0 is off. in the future, other values may be used for other configurations of vis
-    write_type INTEGER NOT NULL DEFAULT 1, -- for now, 1 shows comment form, 0 hides the comment form. in the future, other values may be used for other configurations of comment form
-    help_type INTEGER NOT NULL DEFAULT 1, -- 0 for disabled, 1 for enabled
-    write_hint_type INTEGER NOT NULL DEFAULT 1, -- 1 for under comment form, 0 for off
-    style_btn VARCHAR(500),
-    socialbtn_type INTEGER NOT NULL DEFAULT 0, -- 0 for none, 1 for all,
-    subscribe_type INTEGER NOT NULL DEFAULT 1, -- 0 for none, 1 for email,
-    branding_type INTEGER NOT NULL DEFAULT 1, -- 0 for polis branding, 1 for none,
-    bgcolor VARCHAR(20),
-    help_bgcolor VARCHAR(20),
-    help_color VARCHAR(20),
-    email_domain VARCHAR(200), -- space separated domain names, "microsoft.com google.com"
-    use_xid_whitelist BOOLEAN DEFAULT FALSE, -- check xid whitelist
+    --vis_type INTEGER NOT NULL DEFAULT 0, -- for now, vis=1 is on, vis=0 is off. in the future, other values may be used for other configurations of vis
+    --write_type INTEGER NOT NULL DEFAULT 1, -- for now, 1 shows comment form, 0 hides the comment form. in the future, other values may be used for other configurations of comment form
+    --help_type INTEGER NOT NULL DEFAULT 1, -- 0 for disabled, 1 for enabled
+    --write_hint_type INTEGER NOT NULL DEFAULT 1, -- 1 for under comment form, 0 for off
+    --style_btn VARCHAR(500),
+    --socialbtn_type INTEGER NOT NULL DEFAULT 0, -- 0 for none, 1 for all,
+    --subscribe_type INTEGER NOT NULL DEFAULT 1, -- 0 for none, 1 for email,
+    --branding_type INTEGER NOT NULL DEFAULT 1, -- 0 for polis branding, 1 for none,
+    --bgcolor VARCHAR(20),
+    --help_bgcolor VARCHAR(20),
+    --help_color VARCHAR(20),
+    --email_domain VARCHAR(200), -- space separated domain names, "microsoft.com google.com"
+    --use_xid_whitelist BOOLEAN DEFAULT FALSE, -- check xid whitelist
 
     owner INTEGER REFERENCES users(uid),
-    org_id INTEGER REFERENCES users(uid), -- uid for the account manager of a conversation. Might be the same as the owner of the conversation.
+    --org_id INTEGER REFERENCES users(uid), -- uid for the account manager of a conversation. Might be the same as the owner of the conversation.
 
     -- owner_group_id ??
-    context VARCHAR(1000), -- for things like a semester of a class, etc
-    course_id INTEGER REFERENCES courses(course_id),
-    owner_sees_participation_stats BOOLEAN DEFAULT FALSE, -- currently maps to users needing a polis account, or to requiring single use urls?
+    --context VARCHAR(1000), -- for things like a semester of a class, etc
+    --course_id INTEGER REFERENCES courses(course_id),
+    --owner_sees_participation_stats BOOLEAN DEFAULT FALSE, -- currently maps to users needing a polis account, or to requiring single use urls?
 
-    auth_needed_to_vote BOOLEAN, -- if null, server will default to FALSE
-    auth_needed_to_write BOOLEAN, -- if null, server will default to TRUE
-    auth_opt_fb BOOLEAN, -- if null, server will default to TRUE
-    auth_opt_tw BOOLEAN, -- if null, server will default to TRUE
-    auth_opt_allow_3rdparty BOOLEAN, -- if null, server will default to TRUE -- this overrides auth_opt_fb and auth_opt_tw if false
+    --auth_needed_to_vote BOOLEAN, -- if null, server will default to FALSE
+    --auth_needed_to_write BOOLEAN, -- if null, server will default to TRUE
+    --auth_opt_fb BOOLEAN, -- if null, server will default to TRUE
+    --auth_opt_tw BOOLEAN, -- if null, server will default to TRUE
+    --auth_opt_allow_3rdparty BOOLEAN, -- if null, server will default to TRUE -- this overrides auth_opt_fb and auth_opt_tw if false
 
 --     ptpts_can_vote INTEGER DEFAULT 1,
 --     ptpts_can_write INTEGER DEFAULT 1,
@@ -262,7 +261,7 @@ CREATE TABLE participant_metadata_answers (
 ----  tree.zid.pmqid.pmaid.push(pid)
 ----}
 
-CREATE TABLE contexts(
+/*CREATE TABLE contexts(
     context_id SERIAL,
     name VARCHAR(300),
     creator INTEGER REFERENCES users(uid), -- rather than owner, since not sure how ownership will be done
@@ -281,9 +280,9 @@ CREATE TABLE upvotes (
     uid INTEGER REFERENCES users(uid),
     zid INTEGER REFERENCES conversations(zid),
     UNIQUE(uid, zid)
-);
+);*/
 
-
+/*
 --  invite codes for Owners
 CREATE TABLE oinvites (
     oinvite VARCHAR(300) NOT NULL,
@@ -330,23 +329,23 @@ CREATE TABLE beta(
     created BIGINT DEFAULT now_as_millis(),
     UNIQUE(email)
 );
-
+*/
 
 
 CREATE TABLE participants(
     pid INTEGER NOT NULL, -- populated by trigger pid_auto
     uid INTEGER NOT NULL REFERENCES users(uid),
     zid INTEGER NOT NULL REFERENCES conversations(zid),
-    vote_count INTEGER NOT NULL DEFAULT 0, -- May be greater than number of comments, if they change votes
+    --vote_count INTEGER NOT NULL DEFAULT 0, -- May be greater than number of comments, if they change votes
     -- What counts as an interaction? voting, commenting, reloading the page (tbd if reloading is a good idea)
-    last_interaction BIGINT NOT NULL DEFAULT 0,
+    --last_interaction BIGINT NOT NULL DEFAULT 0,
 
     -- subscription stuff
-    subscribed INTEGER NOT NULL DEFAULT 0, -- 0 for false, 1 for email, 2 for telegram
-    last_notified BIGINT DEFAULT 0, -- time of last email
-    nsli SMALLINT NOT NULL DEFAULT 0, -- notifications_since_last_interaction
+    --subscribed INTEGER NOT NULL DEFAULT 0, -- 0 for false, 1 for email, 2 for telegram
+    --last_notified BIGINT DEFAULT 0, -- time of last email
+    --nsli SMALLINT NOT NULL DEFAULT 0, -- notifications_since_last_interaction
 
-    mod INTEGER NOT NULL DEFAULT 0,-- {-1,0,1,2} where -1 is "hide from vis", 0 is no action, 1 is "acknowledge", and 2 is is "pin" (always show, even if there are lots of high-follower count alternatives)
+    --mod INTEGER NOT NULL DEFAULT 0,-- {-1,0,1,2} where -1 is "hide from vis", 0 is no action, 1 is "acknowledge", and 2 is is "pin" (always show, even if there are lots of high-follower count alternatives)
 
     -- server admin bool
     created BIGINT DEFAULT now_as_millis(),
@@ -357,7 +356,7 @@ CREATE TABLE participants(
 CREATE INDEX participants_conv_uid_idx ON participants USING btree (uid); -- speed up the inbox query
 CREATE INDEX participants_conv_idx ON participants USING btree (zid); -- speed up the auto-increment trigger
 
-
+/*
 CREATE TABLE participants_extended(
     uid INTEGER NOT NULL REFERENCES users(uid),
     zid INTEGER NOT NULL REFERENCES conversations(zid),
@@ -383,8 +382,8 @@ CREATE TABLE participant_locations (
     source INTEGER NOT NULL, -- 1: manual entry into db, 100:IP,200:HTML5,300:FB,400:Twitter
     UNIQUE (zid, uid)
 );
-
-
+*/
+/*
 -- mapping between uid and (owner,eXternalID)
 CREATE TABLE xids (
     uid INTEGER NOT NULL REFERENCES users(uid),
@@ -414,8 +413,8 @@ CREATE TABLE notification_tasks (
     modified BIGINT DEFAULT now_as_millis(),
     UNIQUE (zid)
 );
-
-
+*/
+/*
 CREATE TABLE participant_metadata_choices (
     zid INTEGER,
     pid INTEGER,
@@ -497,8 +496,8 @@ CREATE TABLE facebook_friends (
     friend INTEGER NOT NULL REFERENCES users(uid)
     -- UNIQUE(uid, friend)
 );
-
-
+*/
+/*
 -- Single Use Invites
 -- These records should contain enough to populate a record in the xids table (in conjunction with creating a user, which provides a uid)
 CREATE TABLE suzinvites (
@@ -518,7 +517,7 @@ CREATE INDEX suzinvites_owner_zid_idx ON suzinvites USING btree (owner, zid);
     --rwx?
     --admin bool
 --);
-
+*/
 
  -- can't rely on SEQUENCEs since they may have gaps.. or maybe we can live with that? maybe we use a trigger incrementer like on the participants table? that would mean locking on a per conv basis, maybe ok for starters
 CREATE TABLE comments(
@@ -529,15 +528,15 @@ CREATE TABLE comments(
     created BIGINT DEFAULT now_as_millis(),
     modified BIGINT DEFAULT now_as_millis(),
     txt VARCHAR(1000) NOT NULL, -- TODO ensure not empty
-    velocity REAL NOT NULL DEFAULT 1,
+    --velocity REAL NOT NULL DEFAULT 1,
     mod INTEGER NOT NULL DEFAULT 0,-- {-1,0,1} where -1 is reject, 0 is no action, and 1 is accept
-    lang VARCHAR(10), -- 'en', 'en-US', etc
-    lang_confidence REAL, -- float between 0 and 1 indicating confidence in language detection (see google translate api)
-    active BOOLEAN NOT NULL DEFAULT TRUE, -- will be false if the comment should not be shown.
-    is_meta BOOLEAN NOT NULL DEFAULT FALSE,
-    tweet_id BIGINT, -- Used when this comment is an imported tweet, else null.
-    quote_src_url VARCHAR(1000), -- URL for a page where the (presumably) famous person's quote can be found
-    anon BOOLEAN NOT NULL DEFAULT false, -- if true, the author of the comment will not be shown.
+    --lang VARCHAR(10), -- 'en', 'en-US', etc
+    --lang_confidence REAL, -- float between 0 and 1 indicating confidence in language detection (see google translate api)
+    --active BOOLEAN NOT NULL DEFAULT TRUE, -- will be false if the comment should not be shown.
+    --is_meta BOOLEAN NOT NULL DEFAULT FALSE,
+    --tweet_id BIGINT, -- Used when this comment is an imported tweet, else null.
+    --quote_src_url VARCHAR(1000), -- URL for a page where the (presumably) famous person's quote can be found
+    --anon BOOLEAN NOT NULL DEFAULT false, -- if true, the author of the comment will not be shown.
     is_seed BOOLEAN NOT NULL DEFAULT false,
     UNIQUE(zid, txt),    --issued this: ALTER TABLE comments ADD CONSTRAINT comments_txt_unique_constraint UNIQUE (zid, txt);
     UNIQUE(zid, tid),    --issued this: ALTER TABLE comments ADD CONSTRAINT comments_tid_unique_constraint UNIQUE (zid, tid);
@@ -593,7 +592,7 @@ CREATE TRIGGER tid_auto_unlock
     FOR EACH ROW
     EXECUTE PROCEDURE tid_auto_unlock();
 
-
+/*
 CREATE FUNCTION get_visible_comments(the_zid INTEGER) RETURNS TABLE (tid INTEGER, mod INTEGER, strict_moderation BOOLEAN) AS $$
     select comments.tid, comments.mod, conversations.strict_moderation from comments left join conversations on comments.zid = conversations.zid where active = true and mod >= (CASE WHEN strict_moderation=TRUE then 1 else 0 END) and comments.zid = the_zid;
 $$ LANGUAGE SQL;
@@ -630,7 +629,7 @@ CREATE TABLE conversation_translations (
   UNIQUE(zid, src, lang)
 );
 CREATE INDEX conversation_translations_idx ON conversation_translations USING btree (zid);
-
+*/
 
 CREATE TABLE reports (
   rid BIGSERIAL,
@@ -856,7 +855,7 @@ CREATE TABLE crowd_mod (
 
 
 
-
+/*
 CREATE TABLE event_ptpt_no_more_comments (
     zid INTEGER NOT NULL,
     pid INTEGER NOT NULL,
@@ -874,7 +873,7 @@ CREATE TABLE contributer_agreement_signatures(
     agreement_version INTEGER NOT NULL,
     created BIGINT DEFAULT now_as_millis()
 );
-
+*/
 
 -- -- This should be updated from math nodes, who will have an entire conversation loaded in memory.
 -- CREATE TABLE stats_per_comment(

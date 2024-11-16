@@ -7,6 +7,7 @@ import json
 import logging
 from server import create_app
 from math_calculator import calculate
+from conv_fetcher import ConvFetcher
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -39,12 +40,18 @@ def main():
     user = os.getenv('POSTGRES_USER')
     password = os.getenv('POSTGRES_PASSWORD')
     database_url = f'postgres://{user}:{password}@{db_host}:{db_port}/{database}'
+    db = PostgresDB(host=db_host, database=database, user=user, password=password, port=db_port)
+    fetcher = ConvFetcher(args.chain)
     
     if args.command == 'server':
         app = create_app()
         app.run(host=args.host, port=args.port)
     else:
-        zid = 1
+        data = fetcher.fetch(args.address)
+        zid = db.add_conversation_data_from_dict(data)
+
+        # 2 times
+        calculate(database_url, zid, working_dir='../math')
         calculate(database_url, zid, working_dir='../math')
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 import psycopg2
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Any
 from datetime import datetime
 
 class PostgresDB:
@@ -26,6 +26,59 @@ class PostgresDB:
         """Close database connection"""
         if self.conn:
             self.conn.close()
+    
+    def add_conversation_data_from_dict(self, data: Dict) -> int:
+        """Add conversation data from dictionary to database"""
+        try:
+            # First ensure all users exist
+            users = {data['creator']}  # Start with creator
+            for statement in data['statements']:
+                users.add(statement['author'])
+            for vote in data.get('votes', []):  # Safely handle if votes don't exist
+                users.add(vote['voter'])
+            
+            # Create all users that don't exist yet
+            for address in users:
+                self.ensure_user(address)
+            
+            # Create conversation
+            creator_uid = self.get_user_id(data['creator'])
+            zid = self.create_conversation(
+                topic=data['title'],
+                description=data['description'],
+                owner=creator_uid
+            )
+            
+            # Add statements as comments
+            for statement in data['statements']:
+                author_uid = self.get_user_id(statement['author'])
+                tid = self.create_comment(
+                    zid=zid,
+                    uid=author_uid,
+                    txt=statement['content']
+                )
+            
+            # Add votes
+            for vote in data.get('votes', []):
+                voter_uid = self.get_user_id(vote['voter'])
+                # Convert vote type: 1 = Agree, 2 = Disagree
+                vote_type = 1 if vote['vote'] == 1 else -1 if vote['vote'] == 2 else 0
+                self.create_vote(
+                    zid=zid,
+                    uid=voter_uid,
+                    tid=vote['statementId'],
+                    vote=vote_type
+                )
+            
+            self.conn.commit()
+            return zid
+            
+        except Exception as e:
+            self.conn.rollback()
+            raise Exception(f"Failed to add conversation data: {e}")
+    
+    def get_math_data(self, zid: int) -> Dict[str, Any]:
+        pass
 
     # Conversation Methods
     def create_conversation(self, topic: str, description: str, owner: int) -> int:

@@ -46,7 +46,8 @@ class PostgresDB:
             zid = self.create_conversation(
                 topic=data['title'],
                 description=data['description'],
-                owner=creator_uid
+                owner=creator_uid,
+                address=data['address']
             )
             
             # Add statements as comments
@@ -78,10 +79,27 @@ class PostgresDB:
             raise Exception(f"Failed to add conversation data: {e}")
     
     def get_math_data(self, zid: int) -> Dict[str, Any]:
-        pass
+        """Get math data for a conversation from math_main table"""
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    SELECT data 
+                    FROM math_main 
+                    WHERE zid = %s 
+                    ORDER BY math_tick DESC 
+                    LIMIT 1
+                """, (zid,))
+                
+                result = cur.fetchone()
+                if result:
+                    return result[0]  # Return the JSON data directly
+                return {}
+                
+        except psycopg2.Error as e:
+            raise Exception(f"Failed to get math data: {e}")
 
     # Conversation Methods
-    def create_conversation(self, topic: str, description: str, owner: int) -> int:
+    def create_conversation(self, topic: str, description: str, owner: int, address: Optional[str] = None) -> int:
         """Create a new conversation and return its zid"""
         try:
             # First check if owner exists
@@ -94,10 +112,10 @@ class PostgresDB:
             with self.conn.cursor() as cur:
                 cur.execute("""
                     INSERT INTO conversations 
-                    (topic, description, owner) 
-                    VALUES (%s, %s, %s) 
+                    (topic, description, owner, address) 
+                    VALUES (%s, %s, %s, %s) 
                     RETURNING zid
-                """, (topic, description, owner))
+                """, (topic, description, owner, address))
                 zid = cur.fetchone()[0]
                 self.conn.commit()
                 return zid
@@ -110,23 +128,48 @@ class PostgresDB:
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
-                    SELECT zid, topic, description, owner, created, participant_count 
+                    SELECT zid, topic, description, owner, created, participant_count, address 
                     FROM conversations 
                     WHERE zid = %s
                 """, (zid,))
                 result = cur.fetchone()
                 if result:
                     return {
-                        'zid': result[0],
+                        'conversation_id': result[0],
                         'topic': result[1],
                         'description': result[2],
                         'owner': result[3],
                         'created': result[4],
-                        'participant_count': result[5]
+                        'participant_count': result[5],
+                        'address': result[6]
                     }
                 return None
         except psycopg2.Error as e:
             raise Exception(f"Failed to get conversation: {e}")
+
+    def get_conversation_by_address(self, address: str) -> Optional[Dict]:
+        """Get conversation details by blockchain address"""
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    SELECT zid, topic, description, owner, created, participant_count, address 
+                    FROM conversations 
+                    WHERE address = %s
+                """, (address,))
+                result = cur.fetchone()
+                if result:
+                    return {
+                        'conversation_id': result[0],
+                        'topic': result[1],
+                        'description': result[2],
+                        'owner': result[3],
+                        'created': result[4],
+                        'participant_count': result[5],
+                        'address': result[6]
+                    }
+                return None
+        except psycopg2.Error as e:
+            raise Exception(f"Failed to get conversation by address: {e}")
 
     # Comment Methods
     def _ensure_participant(self, zid: int, uid: int) -> int:
@@ -155,23 +198,50 @@ class PostgresDB:
             raise Exception(f"Failed to create comment: {e}")
 
     def get_comments(self, zid: int) -> List[Dict]:
-        """Get all comments for a conversation"""
+        """Get all comments for a conversation with vote counts"""
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
-                    SELECT tid, pid, uid, txt, created, mod 
-                    FROM comments 
-                    WHERE zid = %s 
-                    ORDER BY tid
+                    SELECT 
+                        c.tid, 
+                        c.pid, 
+                        c.uid, 
+                        c.txt, 
+                        c.created, 
+                        c.modified, 
+                        c.mod, 
+                        c.is_seed,
+                        COALESCE(SUM(CASE WHEN v.vote = 1 THEN 1 ELSE 0 END), 0) as agree_count,
+                        COALESCE(SUM(CASE WHEN v.vote = -1 THEN 1 ELSE 0 END), 0) as disagree_count,
+                        COALESCE(SUM(CASE WHEN v.vote = 0 THEN 1 ELSE 0 END), 0) as pass_count,
+                        COUNT(v.vote) as total_votes
+                    FROM comments c
+                    LEFT JOIN votes_latest_unique v ON c.zid = v.zid AND c.tid = v.tid
+                    WHERE c.zid = %s 
+                    GROUP BY c.tid, c.pid, c.uid, c.txt, c.created, c.modified, c.mod, c.is_seed
+                    ORDER BY c.tid
                 """, (zid,))
-                return [{
-                    'tid': row[0],
-                    'pid': row[1],
-                    'uid': row[2],
-                    'txt': row[3],
-                    'created': row[4],
-                    'mod': row[5]
-                } for row in cur.fetchall()]
+                
+                comments = []
+                for row in cur.fetchall():
+                    comments.append({
+                        'active': True,
+                        'conversation_id': zid,
+                        'tid': row[0],
+                        'pid': row[1],
+                        'uid': row[2],
+                        'txt': row[3],
+                        'created': row[4],
+                        'modified': row[5],
+                        'mod': row[6],
+                        'is_seed': row[7],
+                        'agree_count': row[8],
+                        'disagree_count': row[9],
+                        'pass_count': row[10],
+                        'count': row[11]
+                    })
+                return comments
+                
         except psycopg2.Error as e:
             raise Exception(f"Failed to get comments: {e}")
 

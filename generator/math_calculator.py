@@ -44,10 +44,10 @@ def calculate(database_url: str, zid: str, working_dir: str = "./math", timeout:
             if not line and not error_line and process.poll() is not None:
                 break
             if line:
-                print(line.rstrip())
+                logger.debug(line.rstrip())
                 output.append(line)
             if error_line:
-                print(error_line.rstrip())
+                logger.debug(error_line.rstrip())
                 output.append(error_line)
                 
         # Get the return code and any errors

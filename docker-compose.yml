@@ -11,6 +11,13 @@ services:
       - '127.0.0.1:5432:5432'
     volumes:
       - "postgres:/var/lib/postgresql/data"
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - '127.0.0.1:6379:6379'
+    volumes:
+      - "redis:/data"
   #math:
   #  build: ./math
   #  environment:
@@ -21,3 +28,4 @@ services:
 
 volumes:
     postgres: {}
+    redis: {}

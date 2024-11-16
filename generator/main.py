@@ -33,26 +33,33 @@ def parse_args():
 
 def main():
     args = parse_args()
+    math_dir = '../math'
     #db_host = os.getenv('POSTGRES_HOST')
     db_host = 'localhost'
-    db_port = int(os.getenv('POSTGRES_PORT') or 5432)
+    db_port = os.getenv('POSTGRES_PORT', 5432)
     database = os.getenv('POSTGRES_DB')
     user = os.getenv('POSTGRES_USER')
     password = os.getenv('POSTGRES_PASSWORD')
     database_url = f'postgres://{user}:{password}@{db_host}:{db_port}/{database}'
-    db = PostgresDB(host=db_host, database=database, user=user, password=password, port=db_port)
-    fetcher = ConvFetcher(args.chain)
     
     if args.command == 'server':
-        app = create_app()
+        app = create_app(db_host, database, user, password, db_port=db_port, math_dir=math_dir)
         app.run(host=args.host, port=args.port)
     else:
+        db = PostgresDB(host=db_host, database=database, user=user, password=password, port=db_port)
+        fetcher = ConvFetcher(args.chain)
         data = fetcher.fetch(args.address)
         zid = db.add_conversation_data_from_dict(data)
 
         # 2 times
-        calculate(database_url, zid, working_dir='../math')
-        calculate(database_url, zid, working_dir='../math')
+        calculate(database_url, zid, working_dir=math_dir)
+        calculate(database_url, zid, working_dir=math_dir)
+        #zid = 1
+        math_data = db.get_math_data(zid)
+        logger.debug(math_data)
+        with open(args.output, 'w') as f:
+            json.dump(math_data, f)
+        logger.info(f"Math data saved to {args.output}")
 
 if __name__ == '__main__':
     main()

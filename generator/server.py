@@ -4,8 +4,6 @@ from conv_fetcher import ConvFetcher
 from math_calculator import calculate
 import os
 import logging
-from celery import Celery
-import redis
 
 logger = logging.getLogger(__name__)
 

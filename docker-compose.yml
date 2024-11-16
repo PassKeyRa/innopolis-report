@@ -7,22 +7,26 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:?error}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
       - POSTGRES_USER=${POSTGRES_USER:?error}
-    ports:
-      - '127.0.0.1:5432:5432'
     volumes:
       - "postgres:/var/lib/postgresql/data"
-  #math:
-  #  build: ./math
-  #  environment:
-  #    - POSTGRES_DB=${POSTGRES_DB:?error}
-  #    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
-  #    - POSTGRES_USER=${POSTGRES_USER:?error}
-  #    - POSTGRES_HOST=postgres
-  #    - MATH_ENV=${MATH_ENV:-prod}
-  polis-report:
-    build: ./client-report
-    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  math:
+    build: ./generator
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:?error}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
+      - POSTGRES_USER=${POSTGRES_USER:?error}
+      - POSTGRES_HOST=${POSTGRES_HOST:?error}
+      - POSTGRES_PORT=${POSTGRES_PORT:?error}
     ports:
-      - '5010:5010'
+      - '127.0.0.1:8080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
     postgres: {}

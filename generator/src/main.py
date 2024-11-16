@@ -34,8 +34,7 @@ def parse_args():
 def main():
     args = parse_args()
     math_dir = '../math'
-    #db_host = os.getenv('POSTGRES_HOST')
-    db_host = 'localhost'
+    db_host = os.getenv('POSTGRES_HOST', 'localhost')
     db_port = os.getenv('POSTGRES_PORT', 5432)
     database = os.getenv('POSTGRES_DB')
     user = os.getenv('POSTGRES_USER')

@@ -47,7 +47,8 @@ class PostgresDB:
                 topic=data['title'],
                 description=data['description'],
                 owner=creator_uid,
-                address=data['address']
+                address=data['address'],
+                chain=data['chain']
             )
             
             # Add statements as comments
@@ -99,7 +100,7 @@ class PostgresDB:
             raise Exception(f"Failed to get math data: {e}")
 
     # Conversation Methods
-    def create_conversation(self, topic: str, description: str, owner: int, address: Optional[str] = None) -> int:
+    def create_conversation(self, topic: str, description: str, owner: int, address: Optional[str] = None, chain: Optional[str] = None) -> int:
         """Create a new conversation and return its zid"""
         try:
             # First check if owner exists
@@ -112,10 +113,10 @@ class PostgresDB:
             with self.conn.cursor() as cur:
                 cur.execute("""
                     INSERT INTO conversations 
-                    (topic, description, owner, address) 
-                    VALUES (%s, %s, %s, %s) 
+                    (topic, description, owner, address, chain) 
+                    VALUES (%s, %s, %s, %s, %s) 
                     RETURNING zid
-                """, (topic, description, owner, address))
+                """, (topic, description, owner, address, chain))
                 zid = cur.fetchone()[0]
                 self.conn.commit()
                 return zid
@@ -128,7 +129,7 @@ class PostgresDB:
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
-                    SELECT zid, topic, description, owner, created, participant_count, address 
+                    SELECT zid, topic, description, owner, created, participant_count, address, chain 
                     FROM conversations 
                     WHERE zid = %s
                 """, (zid,))
@@ -141,21 +142,22 @@ class PostgresDB:
                         'owner': result[3],
                         'created': result[4],
                         'participant_count': result[5],
-                        'address': result[6]
+                        'address': result[6],
+                        'chain': result[7]
                     }
                 return None
         except psycopg2.Error as e:
             raise Exception(f"Failed to get conversation: {e}")
 
-    def get_conversation_by_address(self, address: str) -> Optional[Dict]:
-        """Get conversation details by blockchain address"""
+    def get_conversation_by_address_and_chain(self, address: str, chain: str) -> Optional[Dict]:
+        """Get conversation details by blockchain address and chain"""
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
-                    SELECT zid, topic, description, owner, created, participant_count, address 
+                    SELECT zid, topic, description, owner, created, participant_count, address, chain 
                     FROM conversations 
-                    WHERE address = %s
-                """, (address,))
+                    WHERE address = %s AND chain = %s
+                """, (address, chain))
                 result = cur.fetchone()
                 if result:
                     return {
@@ -165,7 +167,8 @@ class PostgresDB:
                         'owner': result[3],
                         'created': result[4],
                         'participant_count': result[5],
-                        'address': result[6]
+                        'address': result[6],
+                        'chain': result[7]
                     }
                 return None
         except psycopg2.Error as e:

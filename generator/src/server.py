@@ -54,7 +54,7 @@ def create_app(db_host: str, db_database: str, db_user: str, db_password: str, d
             logger.exception(f"Error getting reports: {e}")
             return jsonify({"error": str(e)}), 500
 
-    @app.route('/api/v3/pca2', methods=['GET'])
+    @app.route('/api/v3/math/pca2', methods=['GET'])
     def get_math_pca2():
         try:
             conversation_id = request.args.get('conversation_id')

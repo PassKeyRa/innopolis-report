@@ -3,15 +3,15 @@ from web3.contract import Contract
 from eth_abi import decode
 from pathlib import Path
 from typing import Dict, Any
-from config import PROVIDERS
+from config import CHAINS
 import json
 
 class ConvFetcher:
     def __init__(self, chain: str):
-        if chain not in PROVIDERS:
+        if chain not in CHAINS:
             raise ValueError(f"Unsupported chain: {chain}")
         
-        self.w3 = Web3(Web3.HTTPProvider(PROVIDERS[chain]))
+        self.w3 = Web3(Web3.HTTPProvider(CHAINS[chain]['rpcTarget']))
         self.chain = chain
 
         # Load ABI

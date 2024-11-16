@@ -2,9 +2,9 @@
 
 import URLs from "./url";
 
-// var urlPrefix = URLs.urlPrefix;
+var urlPrefix = URLs.urlPrefix;
 
-var urlPrefix = "https://backend/";
+// var urlPrefix = "https://backend/";
 
 // var pid = "unknownpid";
 

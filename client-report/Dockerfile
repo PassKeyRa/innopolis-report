@@ -26,4 +26,4 @@ ARG SERVICE_URL
 ENV GIT_HASH ${GIT_HASH:-placeholder}
 ENV SERVICE_URL ${SERVICE_URL}
 
-CMD npm run build:prod
+CMD npm run build:prod && npm start

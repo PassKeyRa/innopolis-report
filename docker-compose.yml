@@ -22,5 +22,7 @@ services:
   polis-report:
     build: ./client-report
     restart: always
+    ports:
+      - '5010:5010'
 volumes:
     postgres: {}

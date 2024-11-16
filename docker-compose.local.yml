@@ -11,6 +11,8 @@ services:
       - '127.0.0.1:5432:5432'
     volumes:
       - "postgres:/var/lib/postgresql/data"
-
+  polis-report:
+    build: ./client-report
+    restart: always
 volumes:
     postgres: {}

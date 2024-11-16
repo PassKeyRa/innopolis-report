@@ -37,7 +37,6 @@ var pathname = window.location.pathname; // "/report/2arcefpshi"
 var report_id = pathname.split("/")[2];
 var chain = getUrlParameter('chain');
 
-console.log("report_id", report_id);
 
 function assertExists(obj, key) {
   if (typeof obj[key] === "undefined") {

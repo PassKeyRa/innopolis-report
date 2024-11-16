@@ -27,6 +27,22 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+  polis-report:
+    build: ./client-report
+    restart: always
+    ports:
+      - '5010:5010'
+    depends_on:
+      postgres:
+        condition: service_healthy
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - math
+      - polis-report
 
 volumes:
     postgres: {}

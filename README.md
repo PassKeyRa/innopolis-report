@@ -48,16 +48,62 @@ cd client-report
 npm install
 ```
 
-
 ### Available Scripts
 
 - `npm start` - Runs the webpack dev server for development
 - `npm run build:prod` - Builds static assets for production deployment
 
-### Environment Variables
+## Docker Setup
 
-- `SERVICE_URL` - (Optional) API Server URL
-- AWS credentials at `.polis_s3_creds_client.json` for S3 bucket deployment
+The project uses Docker for containerized development and deployment. Each component has its own Docker configuration.
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Generator Service Docker
+
+The generator service uses a multi-stage build process:
+
+```bash
+# Build the image
+docker build -t innopolis-generator ./generator
+# Run the container
+docker run -p 5000:5000 \
+-e DATABASE_URL=postgresql://user:password@host:5432/dbname \
+innopolis-generator
+```
+
+
+### Docker Compose
+
+For running the entire stack:
+```bash
+# Start all services
+docker-compose up -d
+# View logs
+docker-compose logs -f
+# Stop all services
+docker-compose down
+```
+
+Environment variables can be configured in a `.env` file:
+```text
+DATABASE_URL=postgresql://user:password@host:5432/dbname
+SERVICE_URL=http://generator:5000
+```
+
+### Docker Development Tips
+
+- Use volume mounts for development to enable hot-reloading:
+  ```yaml
+  volumes:
+    - ./generator:/app
+    - ./client-report:/app
+  ```
+- Use Docker networks to enable service communication
+- Use Docker Compose profiles for different deployment scenarios
 
 ## Development Setup
 
@@ -73,13 +119,20 @@ npm install
 
 3. Set up each component following their respective installation instructions
 
-## Docker Support
 
-The project includes Docker configurations for development and deployment:
+## Development Setup
 
-- `.dockerignore` files are configured for each component
-- Generator service includes Python-specific Docker configurations
-- Client report includes Node.js-based Docker setup
+1. Clone the repository with submodules:
+   ```bash
+   git clone --recursive https://github.com/[username]/innopolis-report.git
+   ```
+
+2. If you've already cloned the repository:
+   ```bash
+   git submodule update --init --recursive
+   ```
+
+3. Set up each component following their respective installation instructions
 
 ## File Structure
 ```

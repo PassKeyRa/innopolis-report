@@ -137,5 +137,37 @@ def create_app(db_host: str, db_database: str, db_user: str, db_password: str, d
         except Exception as e:
             logger.exception(f"Error getting group demographics: {e}")
             return jsonify({"error": str(e)}), 500
+    
+    @app.route('/api/v3/group_demographics', methods=['GET'])
+    def get_group_demographics():
+        try:
+            conversation_id = request.args.get('conversation_id')
+            if not conversation_id:
+                return jsonify({"error": "Missing conversation_id parameter"}), 400
+            
+            math_data = db.get_math_data(int(conversation_id))
+            if not math_data:
+                return jsonify({"error": "No report generated"}), 404
+            groups = len(math_data['group-clusters'])
+                
+            # For now, just return an empty array as specified
+            return jsonify([{
+                "gid": 0,
+                "count": 0,
+                "gender_male": 0,
+                "gender_female": 0,
+                "gender_null": 0,
+                "birth_year": None,
+                "birth_year_count": 0,
+                "meta_comment_agrees": {},
+                "meta_comment_disagrees": {},
+                "meta_comment_passes": {},
+                "ms_birth_year_estimate_fb": None,
+                "birth_year_guess": None
+            }] * groups)
+            
+        except Exception as e:
+            logger.exception(f"Error getting group demographics: {e}")
+            return jsonify({"error": str(e)}), 500
 
     return app

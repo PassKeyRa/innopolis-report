@@ -1,192 +1,192 @@
 {
-    "ethereum": {
-      "chainNamespace": "eip155",
-      "chainId": "0x1",
-      "displayName": "Ethereum Mainnet",
-      "rpcTarget": "https://rpc.ankr.com/eth",
-      "blockExplorerUrl": "https://etherscan.io",
-      "ticker": "ETH",
-      "tickerName": "Ethereum",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "sepolia": {
-      "chainNamespace": "eip155",
-      "chainId": "0xaa36a7",
-      "displayName": "Ethereum Sepolia",
-      "tickerName": "Ethereum",
-      "ticker": "ETH",
-      "rpcTarget": "https://rpc.ankr.com/eth_sepolia",
-      "blockExplorerUrl": "https://sepolia.etherscan.io",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "holesky": {
-      "chainNamespace": "eip155",
-      "chainId": "0x4268",
-      "displayName": "Ethereum Holesky",
-      "tickerName": "Ethereum",
-      "ticker": "ETH",
-      "rpcTarget": "https://rpc.ankr.com/eth_holesky",
-      "blockExplorerUrl": "https://holesky.etherscan.io",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "polygon": {
-      "chainNamespace": "eip155",
-      "chainId": "0x89",
-      "rpcTarget": "https://rpc.ankr.com/polygon",
-      "displayName": "Polygon Mainnet",
-      "blockExplorerUrl": "https://polygonscan.com",
-      "ticker": "MATIC",
-      "tickerName": "Matic",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "polygonTest": {
-      "chainNamespace": "eip155",
-      "chainId": "0x13882",
-      "rpcTarget": "https://rpc.ankr.com/polygon_amoy",
-      "displayName": "Polygon Amoy Testnet",
-      "blockExplorerUrl": "https://amoy.polygonscan.com",
-      "ticker": "MATIC",
-      "tickerName": "Matic",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "base": {
-      "chainNamespace": "eip155",
-      "chainId": "0x14A34",
-      "rpcTarget": "https://sepolia.base.org",
-      "displayName": "Base Sepolia",
-      "blockExplorerUrl": "https://sepolia-explorer.base.org/",
-      "ticker": "ETH",
-      "tickerName": "ETH",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "bnb": {
-      "chainNamespace": "eip155",
-      "chainId": "0x38",
-      "rpcTarget": "https://rpc.ankr.com/bsc",
-      "displayName": "Binance SmartChain Mainnet",
-      "blockExplorerUrl": "https://bscscan.com/",
-      "ticker": "BNB",
-      "tickerName": "BNB",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "avalanche": {
-      "chainNamespace": "eip155",
-      "chainId": "0xA86A",
-      "rpcTarget": "https://rpc.ankr.com/avalanche-c",
-      "displayName": "Avalanche C-Chain Mainnet",
-      "blockExplorerUrl": "https://subnets.avax.network/c-chain",
-      "ticker": "AVAX",
-      "tickerName": "AVAX",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "arbitrum": {
-      "chainNamespace": "eip155",
-      "chainId": "0xA4B1",
-      "rpcTarget": "https://rpc.ankr.com/arbitrum",
-      "displayName": "Arbitrum Mainnet",
-      "blockExplorerUrl": "https://arbiscan.io",
-      "ticker": "AETH",
-      "tickerName": "AETH",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "optimism": {
-      "chainNamespace": "eip155",
-      "chainId": "0xA",
-      "rpcTarget": "https://rpc.ankr.com/optimism",
-      "displayName": "Optimism Mainnet",
-      "blockExplorerUrl": "https://optimistic.etherscan.io",
-      "ticker": "OP",
-      "tickerName": "OP",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "cronos": {
-      "chainNamespace": "eip155",
-      "chainId": "0x19",
-      "rpcTarget": "https://rpc.cronos.org",
-      "displayName": "Cronos Mainnet",
-      "blockExplorerUrl": "https://cronoscan.com/",
-      "ticker": "CRO",
-      "tickerName": "CRO",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "harmony": {
-      "chainNamespace": "eip155",
-      "chainId": "0x63564c40",
-      "rpcTarget": "https://rpc.ankr.com/harmony",
-      "displayName": "Harmony Mainnet",
-      "blockExplorerUrl": "https://explorer.harmony.one",
-      "ticker": "ONE",
-      "tickerName": "ONE",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "celo": {
-      "chainNamespace": "eip155",
-      "chainId": "0xa4ec",
-      "rpcTarget": "https://rpc.ankr.com/celo",
-      "displayName": "Celo Mainnet",
-      "blockExplorerUrl": "https://explorer.celo.org",
-      "ticker": "CELO",
-      "tickerName": "CELO",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "moonbeam": {
-      "chainNamespace": "eip155",
-      "chainId": "0x504",
-      "rpcTarget": "https://rpc.ankr.com/moonbeam",
-      "displayName": "Moonbeam Mainnet",
-      "blockExplorerUrl": "https://moonbeam.moonscan.io",
-      "ticker": "GLMR",
-      "tickerName": "GLMR",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "moonriver": {
-      "chainNamespace": "eip155",
-      "chainId": "0x505",
-      "rpcTarget": "https://rpc.api.moonriver.moonbeam.network",
-      "displayName": "Moonriver Mainnet",
-      "blockExplorerUrl": "https://moonriver.moonscan.io",
-      "ticker": "MOVR",
-      "tickerName": "MOVR",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "klaytn": {
-      "chainNamespace": "eip155",
-      "chainId": "0x2019",
-      "rpcTarget": "https://public-node-api.klaytnapi.com/v1/cypress",
-      "displayName": "Klaytn Mainnet",
-      "blockExplorerUrl": "https://scope.klaytn.com",
-      "ticker": "KLAY",
-      "tickerName": "KLAY",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "flare": {
-      "chainNamespace": "eip155",
-      "chainId": "0xE",
-      "rpcTarget": "https://flare-api.flare.network/ext/C/rpc",
-      "displayName": "Flare Mainnet",
-      "blockExplorerUrl": "https://flare-explorer.flare.network/",
-      "ticker": "FLR",
-      "tickerName": "FLR",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "songbird": {
-      "chainNamespace": "eip155",
-      "chainId": "0x13",
-      "rpcTarget": "https://songbird-api.flare.network/ext/C/rpc",
-      "displayName": "Songbird canary network",
-      "blockExplorerUrl": "https://songbird-explorer.flare.network",
-      "ticker": "SGB",
-      "tickerName": "SGB",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    },
-    "zkatana": {
-      "chainNamespace": "eip155",
-      "chainId": "0x133E40",
-      "rpcTarget": "https://rpc.zkatana.gelato.digital",
-      "displayName": "zKatana Testnet",
-      "blockExplorerUrl": "https://zkatana.blockscout.com",
-      "ticker": "ETH",
-      "tickerName": "ETH",
-      "logo": "https://web3auth.io/images/web3authlog.png"
-    }
-  } 
+  "ethereum": {
+    "chainNamespace": "eip155",
+    "chainId": "0x1",
+    "displayName": "Ethereum Mainnet",
+    "rpcTarget": "https://rpc.ankr.com/eth",
+    "blockExplorerUrl": "https://etherscan.io",
+    "ticker": "ETH",
+    "tickerName": "Ethereum",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "sepolia": {
+    "chainNamespace": "eip155",
+    "chainId": "0xaa36a7",
+    "displayName": "Ethereum Sepolia",
+    "tickerName": "Ethereum",
+    "ticker": "ETH",
+    "rpcTarget": "https://rpc.ankr.com/eth_sepolia",
+    "blockExplorerUrl": "https://sepolia.etherscan.io",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "holesky": {
+    "chainNamespace": "eip155",
+    "chainId": "0x4268",
+    "displayName": "Ethereum Holesky",
+    "tickerName": "Ethereum",
+    "ticker": "ETH",
+    "rpcTarget": "https://rpc.ankr.com/eth_holesky",
+    "blockExplorerUrl": "https://holesky.etherscan.io",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "polygon": {
+    "chainNamespace": "eip155",
+    "chainId": "0x89",
+    "rpcTarget": "https://rpc.ankr.com/polygon",
+    "displayName": "Polygon Mainnet",
+    "blockExplorerUrl": "https://polygonscan.com",
+    "ticker": "MATIC",
+    "tickerName": "Matic",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "polygonTest": {
+    "chainNamespace": "eip155",
+    "chainId": "0x13882",
+    "rpcTarget": "https://rpc.ankr.com/polygon_amoy",
+    "displayName": "Polygon Amoy Testnet",
+    "blockExplorerUrl": "https://amoy.polygonscan.com",
+    "ticker": "MATIC",
+    "tickerName": "Matic",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "base": {
+    "chainNamespace": "eip155",
+    "chainId": "0x14A34",
+    "rpcTarget": "https://sepolia.base.org",
+    "displayName": "Base Sepolia",
+    "blockExplorerUrl": "https://sepolia-explorer.base.org/",
+    "ticker": "ETH",
+    "tickerName": "ETH",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "bnb": {
+    "chainNamespace": "eip155",
+    "chainId": "0x38",
+    "rpcTarget": "https://rpc.ankr.com/bsc",
+    "displayName": "Binance SmartChain Mainnet",
+    "blockExplorerUrl": "https://bscscan.com/",
+    "ticker": "BNB",
+    "tickerName": "BNB",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "avalanche": {
+    "chainNamespace": "eip155",
+    "chainId": "0xA86A",
+    "rpcTarget": "https://rpc.ankr.com/avalanche-c",
+    "displayName": "Avalanche C-Chain Mainnet",
+    "blockExplorerUrl": "https://subnets.avax.network/c-chain",
+    "ticker": "AVAX",
+    "tickerName": "AVAX",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "arbitrum": {
+    "chainNamespace": "eip155",
+    "chainId": "0xA4B1",
+    "rpcTarget": "https://rpc.ankr.com/arbitrum",
+    "displayName": "Arbitrum Mainnet",
+    "blockExplorerUrl": "https://arbiscan.io",
+    "ticker": "AETH",
+    "tickerName": "AETH",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "optimism": {
+    "chainNamespace": "eip155",
+    "chainId": "0xA",
+    "rpcTarget": "https://rpc.ankr.com/optimism",
+    "displayName": "Optimism Mainnet",
+    "blockExplorerUrl": "https://optimistic.etherscan.io",
+    "ticker": "OP",
+    "tickerName": "OP",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "cronos": {
+    "chainNamespace": "eip155",
+    "chainId": "0x19",
+    "rpcTarget": "https://rpc.cronos.org",
+    "displayName": "Cronos Mainnet",
+    "blockExplorerUrl": "https://cronoscan.com/",
+    "ticker": "CRO",
+    "tickerName": "CRO",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "harmony": {
+    "chainNamespace": "eip155",
+    "chainId": "0x63564c40",
+    "rpcTarget": "https://rpc.ankr.com/harmony",
+    "displayName": "Harmony Mainnet",
+    "blockExplorerUrl": "https://explorer.harmony.one",
+    "ticker": "ONE",
+    "tickerName": "ONE",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "celo": {
+    "chainNamespace": "eip155",
+    "chainId": "0xa4ec",
+    "rpcTarget": "https://rpc.ankr.com/celo",
+    "displayName": "Celo Mainnet",
+    "blockExplorerUrl": "https://explorer.celo.org",
+    "ticker": "CELO",
+    "tickerName": "CELO",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "moonbeam": {
+    "chainNamespace": "eip155",
+    "chainId": "0x504",
+    "rpcTarget": "https://rpc.ankr.com/moonbeam",
+    "displayName": "Moonbeam Mainnet",
+    "blockExplorerUrl": "https://moonbeam.moonscan.io",
+    "ticker": "GLMR",
+    "tickerName": "GLMR",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "moonriver": {
+    "chainNamespace": "eip155",
+    "chainId": "0x505",
+    "rpcTarget": "https://rpc.api.moonriver.moonbeam.network",
+    "displayName": "Moonriver Mainnet",
+    "blockExplorerUrl": "https://moonriver.moonscan.io",
+    "ticker": "MOVR",
+    "tickerName": "MOVR",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "klaytn": {
+    "chainNamespace": "eip155",
+    "chainId": "0x2019",
+    "rpcTarget": "https://public-node-api.klaytnapi.com/v1/cypress",
+    "displayName": "Klaytn Mainnet",
+    "blockExplorerUrl": "https://scope.klaytn.com",
+    "ticker": "KLAY",
+    "tickerName": "KLAY",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "flare": {
+    "chainNamespace": "eip155",
+    "chainId": "0xE",
+    "rpcTarget": "https://flare-api.flare.network/ext/C/rpc",
+    "displayName": "Flare Mainnet",
+    "blockExplorerUrl": "https://flare-explorer.flare.network/",
+    "ticker": "FLR",
+    "tickerName": "FLR",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "songbird": {
+    "chainNamespace": "eip155",
+    "chainId": "0x13",
+    "rpcTarget": "https://songbird-api.flare.network/ext/C/rpc",
+    "displayName": "Songbird canary network",
+    "blockExplorerUrl": "https://songbird-explorer.flare.network",
+    "ticker": "SGB",
+    "tickerName": "SGB",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "zkatana": {
+    "chainNamespace": "eip155",
+    "chainId": "0x133E40",
+    "rpcTarget": "https://rpc.zkatana.gelato.digital",
+    "displayName": "zKatana Testnet",
+    "blockExplorerUrl": "https://zkatana.blockscout.com",
+    "ticker": "ETH",
+    "tickerName": "ETH",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  }
+} 

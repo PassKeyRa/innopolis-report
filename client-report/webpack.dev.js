@@ -9,7 +9,7 @@ const serviceUrl = process.env.SERVICE_URL || 'http://localhost:8080';
 
 module.exports = {
   ...common,
-  mode: 'development',
+  mode: 'production',
   devtool: 'inline-source-map',
   output: {
     filename: 'report_bundle.js',
@@ -22,7 +22,7 @@ module.exports = {
       filename: 'report_style.css',
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
+      'process.env.NODE_ENV': JSON.stringify('production'),
       'process.env.SERVICE_URL': JSON.stringify(process.env.SERVICE_URL),
     }),
     new webpack.HotModuleReplacementPlugin(),

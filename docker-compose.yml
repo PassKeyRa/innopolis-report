@@ -19,6 +19,8 @@ services:
   #    - POSTGRES_USER=${POSTGRES_USER:?error}
   #    - POSTGRES_HOST=postgres
   #    - MATH_ENV=${MATH_ENV:-prod}
-
+  polis-report:
+    build: ./client-report
+    restart: always
 volumes:
     postgres: {}

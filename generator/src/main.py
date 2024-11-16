@@ -53,11 +53,20 @@ def main():
         # 2 times
         calculate(database_url, zid, working_dir=math_dir)
         calculate(database_url, zid, working_dir=math_dir)
-        #zid = 1
+
+        conversation = db.get_conversation(zid)
+        logger.debug("Conversation: " + str(conversation))
         math_data = db.get_math_data(zid)
-        logger.debug(math_data)
+        logger.debug("Math data: " + str(math_data))
+        comments = db.get_comments(zid)
+        logger.debug("Comments: " + str(comments))
+        
         with open(args.output, 'w') as f:
-            json.dump(math_data, f)
+            json.dump({
+                "conversation": conversation,
+                "math": math_data,
+                "comments": comments
+            }, f)
         logger.info(f"Math data saved to {args.output}")
 
 if __name__ == '__main__':

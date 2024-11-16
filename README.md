@@ -30,6 +30,10 @@ Flexible community identification through various on-chain credentials:
 - Collective expression tools for Web3 communities
 - Community sentiment analysis and trend identification
 
+# Data
+
+All data is stored on chain, therefore it can not be deleted or modified. There is frontend page to generate report. This frontend takes data from blockchain and generates HTML page with vote statistics. Anyone can launch docker image to generate report locally.
+
 ## Project Structure
 
 The repository consists of three main components:

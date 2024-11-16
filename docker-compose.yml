@@ -35,6 +35,12 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      math:
+        condition: service_started
+  frontend:
+    build: ./InnoPolis-frontend/inno-polis-frontend
+    ports:
+      - '3000:3000'
   nginx:
     build: ./nginx
     ports:

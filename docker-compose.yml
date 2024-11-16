@@ -7,18 +7,20 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:?error}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
       - POSTGRES_USER=${POSTGRES_USER:?error}
-    ports:
-      - '127.0.0.1:5432:5432'
     volumes:
       - "postgres:/var/lib/postgresql/data"
-  #math:
-  #  build: ./math
-  #  environment:
-  #    - POSTGRES_DB=${POSTGRES_DB:?error}
-  #    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
-  #    - POSTGRES_USER=${POSTGRES_USER:?error}
-  #    - POSTGRES_HOST=postgres
-  #    - MATH_ENV=${MATH_ENV:-prod}
+  math:
+    build: ./generator
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:?error}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
+      - POSTGRES_USER=${POSTGRES_USER:?error}
+      - POSTGRES_HOST=${POSTGRES_HOST:?error}
+      - POSTGRES_PORT=${POSTGRES_PORT:?error}
+    ports:
+      - '127.0.0.1:8080:8080'
+    depends_on:
+      - postgres
 
 volumes:
     postgres: {}

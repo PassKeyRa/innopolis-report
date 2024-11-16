@@ -8,7 +8,7 @@ from postgres import PostgresDB
 load_dotenv()
 
 if len(sys.argv) < 2:
-    print("Usage: python populate_data.py <sample json file>")
+    print("Usage: python populate_data.py <data json file>")
     sys.exit(1)
 
 db = PostgresDB(

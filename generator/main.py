@@ -2,84 +2,37 @@ from dotenv import load_dotenv
 from postgres import PostgresDB
 import os
 import random
+import argparse
+import json
+from server import create_app
 
 load_dotenv()
 
-db = PostgresDB(
-    host='localhost',
-    database=os.getenv('POSTGRES_DB'),
-    user=os.getenv('POSTGRES_USER'),
-    password=os.getenv('POSTGRES_PASSWORD')
-)
+def parse_args():
+    parser = argparse.ArgumentParser(description='Poll data exporter')
+    subparsers = parser.add_subparsers(dest='command', required=True)
 
-random_mail = lambda: f"user{random.randint(1000, 9999)}@example.com"
+    # Server command
+    server_parser = subparsers.add_parser('server', help='Run in server mode')
+    server_parser.add_argument('--port', type=int, required=True, help='Port to listen on')
+    server_parser.add_argument('--host', type=str, default='127.0.0.1', help='Host to bind to (default: 127.0.0.1)')
 
-# First create a user
-uid = db.create_user(
-    address=random_mail(),
-    hname=f"Example User {random.randint(1000, 9999)}",
-    is_owner=True  # Give them conversation creation privileges
-)
+    # CLI command
+    cli_parser = subparsers.add_parser('cli', help='Run in CLI mode')
+    cli_parser.add_argument('--chain', type=str, required=True, help='Chain name (sepolia/mainnet/base/etc.)')
+    cli_parser.add_argument('--address', type=str, required=True, help='Chain address of the target poll')
+    cli_parser.add_argument('--output', type=str, required=True, help='Output JSON file name')
 
-# Then create a conversation owned by that user
-zid = db.create_conversation(
-    topic="Discussion Topic",
-    description="Discussion Description",
-    owner=uid
-)
+    return parser.parse_args()
 
-# Create a comment
-tid = db.create_comment(
-    zid=zid,
-    uid=uid,
-    txt="This is a comment"
-)
+def main():
+    args = parse_args()
+    
+    if args.command == 'server':
+        app = create_app()
+        app.run(host=args.host, port=args.port)
+    else:
+        pass
 
-# Create a vote
-db.create_vote(
-    zid=zid,
-    uid=uid,
-    tid=tid,
-    vote=1
-)
-
-# Create a second user
-uid2 = db.create_user(
-    address=random_mail(),
-    hname=f"Example User {random.randint(1000, 9999)}",
-    is_owner=False  # Give them conversation creation privileges
-)
-
-# Create a vote
-db.create_vote(
-    zid=zid,
-    uid=uid2,
-    tid=tid,
-    vote=-1
-)
-
-# Create a second user
-uid3 = db.create_user(
-    address=random_mail(),
-    hname=f"Example User {random.randint(1000, 9999)}",
-    is_owner=False  # Give them conversation creation privileges
-)
-
-# Create a vote
-db.create_vote(
-    zid=zid,
-    uid=uid3,
-    tid=tid,
-    vote=-1
-)
-
-# Get conversation details
-conversation = db.get_conversation(zid)
-print(conversation)
-comments = db.get_comments(zid)
-print(comments)
-votes = db.get_votes(zid, tid)
-print(votes)
-
-# Close connection when done
-db.close()
+if __name__ == '__main__':
+    main()

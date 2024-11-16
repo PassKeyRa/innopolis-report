@@ -12,6 +12,7 @@ function getUrlParameter(name) {
 }
 
 const chain = getUrlParameter('chain');
+const report_id = getUrlParameter('report_id');
 const blockscoutUrl = "blockscout.com";
 const urlPrefix = chain ? `https://${chain}.${blockscoutUrl}/` : `https://${blockscoutUrl}/`;
 
@@ -38,7 +39,7 @@ const Content = ({conversation}) => {
         }}>
         <a
           style={{color: "#48ae20", fontWeight: 700, textDecoration: "none"}}
-          href={`${urlPrefix + conversation.conversation_id}`}>{urlPrefix + conversation.conversation_id}
+          href={`${urlPrefix + report_id}`}>{urlPrefix + report_id}
         </a>
       </p>
     </div>

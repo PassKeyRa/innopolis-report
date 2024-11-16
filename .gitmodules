@@ -1,0 +1,3 @@
+[submodule "InnoPolis-frontend"]
+	path = InnoPolis-frontend
+	url = https://github.com/boggda/InnoPolis-frontend/

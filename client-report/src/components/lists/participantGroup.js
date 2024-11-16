@@ -13,7 +13,7 @@ const ParticipantGroup = ({
   comments,
   groupVotesForThisGroup,
   // groupVotesForOtherGroups,
-  // demographicsForGroup,
+  demographicsForGroup,
   ptptCount,
   groupName,
   formatTid,

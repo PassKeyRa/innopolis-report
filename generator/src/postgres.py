@@ -150,13 +150,15 @@ class PostgresDB:
             raise Exception(f"Failed to get conversation: {e}")
 
     def get_conversation_by_address_and_chain(self, address: str, chain: str) -> Optional[Dict]:
-        """Get conversation details by blockchain address and chain"""
+        """Get conversation details by blockchain address and chain, returns the most recent one if multiple exist"""
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
                     SELECT zid, topic, description, owner, created, participant_count, address, chain 
                     FROM conversations 
                     WHERE address = %s AND chain = %s
+                    ORDER BY zid DESC
+                    LIMIT 1
                 """, (address, chain))
                 result = cur.fetchone()
                 if result:

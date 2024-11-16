@@ -111,25 +111,15 @@ def create_app(db_host: str, db_database: str, db_user: str, db_password: str, d
             if not report_id or not chain:
                 return jsonify({"error": "Missing required parameters"}), 400
                 
-            # Start async task
-            logger.info(f"Checking if conversation exists for {report_id}")
-            conversation = db.get_conversation_by_address_and_chain(report_id, chain)
-            if not conversation:
-                # Fetch from chain and store
-                logger.info(f"Fetching conversation from {chain} for {report_id}")
-                fetcher = ConvFetcher(chain)
-                conv_data = fetcher.fetch(report_id)
-                conversation_id = db.add_conversation_data_from_dict(conv_data)
-            else:
-                conversation_id = conversation['conversation_id']
+            # Fetch from chain and store
+            logger.info(f"Fetching conversation from {chain} for {report_id}")
+            fetcher = ConvFetcher(chain)
+            conv_data = fetcher.fetch(report_id)
+            conversation_id = db.add_conversation_data_from_dict(conv_data)
 
-            logger.info(f"Checking if math data exists for {conversation_id}")
-            math_data = db.get_math_data(int(conversation_id))
-            if not math_data:
-                # Generate math data
-                logger.info(f"Generating math data for {conversation_id}")
-                calculate(database_url, conversation_id, working_dir=math_dir)
-                calculate(database_url, conversation_id, working_dir=math_dir)
+            logger.info(f"Generating math data for {conversation_id}")
+            calculate(database_url, conversation_id, working_dir=math_dir)
+            calculate(database_url, conversation_id, working_dir=math_dir)
             
             logger.info(f"Report generation completed for {conversation_id}")
             return {"status": "completed", "conversation_id": conversation_id}

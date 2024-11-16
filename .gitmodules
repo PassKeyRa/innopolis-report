@@ -1,3 +1,6 @@
 [submodule "InnoPolis-frontend"]
 	path = InnoPolis-frontend
 	url = https://github.com/boggda/InnoPolis-frontend/
+[submodule "innopolis-contracts"]
+	path = innopolis-contracts
+	url = https://github.com/Frodan/innopolis-contracts

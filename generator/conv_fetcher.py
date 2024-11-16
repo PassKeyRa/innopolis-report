@@ -12,7 +12,8 @@ class ConvFetcher:
             raise ValueError(f"Unsupported chain: {chain}")
         
         self.w3 = Web3(Web3.HTTPProvider(PROVIDERS[chain]))
-        
+        self.chain = chain
+
         # Load ABI
         abi_path = Path(__file__).parent / "abi" / "IConversation.sol"
         with open(abi_path) as f:
@@ -88,6 +89,7 @@ class ConvFetcher:
 
         return {
             'address': contract_address,
+            'chain': self.chain,
             'title': title,
             'description': description,
             'creator': creator,

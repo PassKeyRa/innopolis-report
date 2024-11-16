@@ -30,11 +30,12 @@ def create_app(db_host: str, db_database: str, db_user: str, db_password: str, d
     def get_reports():
         try:
             report_id = request.args.get('report_id')
-            if not report_id:
-                return jsonify({"error": "Missing report_id parameter"}), 400
+            chain = request.args.get('chain')
+            if not report_id or not chain:
+                return jsonify({"error": "Missing required parameters"}), 400
                 
             # Simply check if we have this report
-            conversation = db.get_conversation_by_address(report_id)
+            conversation = db.get_conversation_by_address_and_chain(report_id, chain)
             if not conversation:
                 return jsonify({"error": "Report not found or not generated"}), 404
 
@@ -112,7 +113,7 @@ def create_app(db_host: str, db_database: str, db_user: str, db_password: str, d
                 
             # Start async task
             logger.info(f"Checking if conversation exists for {report_id}")
-            conversation = db.get_conversation_by_address(report_id)
+            conversation = db.get_conversation_by_address_and_chain(report_id, chain)
             if not conversation:
                 # Fetch from chain and store
                 logger.info(f"Fetching conversation from {chain} for {report_id}")

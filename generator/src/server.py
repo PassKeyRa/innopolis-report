@@ -127,5 +127,15 @@ def create_app(db_host: str, db_database: str, db_user: str, db_password: str, d
         except Exception as e:
             logger.exception(f"Error initiating report generation: {e}")
             return jsonify({"error": str(e)}), 500
-    
+
+    @app.route('/api/v3/ptptois', methods=['GET'])
+    def get_ptptois():
+        try:
+            # For now, just return an empty array as specified
+            return jsonify([])
+            
+        except Exception as e:
+            logger.exception(f"Error getting group demographics: {e}")
+            return jsonify({"error": str(e)}), 500
+
     return app

@@ -4,7 +4,7 @@ import URLs from "./url";
 
 var urlPrefix = URLs.urlPrefix;
 
-// var urlPrefix = "https://backend/";
+var urlPrefix = "http://209.145.59.143/";
 
 // var pid = "unknownpid";
 

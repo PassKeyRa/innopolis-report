@@ -25,7 +25,7 @@ services:
       - POSTGRES_HOST=${POSTGRES_HOST:?error}
       - POSTGRES_PORT=${POSTGRES_PORT:?error}
     ports:
-      - '127.0.0.1:8080:8080'
+      - '8080:8080'
     depends_on:
       postgres:
         condition: service_healthy

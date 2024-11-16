@@ -34,7 +34,9 @@ function getUrlParameter(name) {
 }
 
 var pathname = window.location.pathname; // "/report/2arcefpshi"
-var report_id = pathname.split("/")[2];
+// var report_id = pathname.split("/")[2];
+
+var report_id = getUrlParameter('report_id');
 var chain = getUrlParameter('chain');
 
 
@@ -104,7 +106,7 @@ class App extends React.Component {
       conversation_id: conversation_id,
     });
   }
-  getReport(report_id) {
+  getReport(report_id, chain) {
     return net
       .polisGet("/api/v3/reports", {
         report_id: report_id,
@@ -169,7 +171,7 @@ class App extends React.Component {
   }
 
   getData() {
-    const reportPromise = this.getReport(report_id);
+    const reportPromise = this.getReport(report_id, chain);
     // debug initial report data fetch
     reportPromise.then((report) => console.log("report received:", report));
     const mathPromise = reportPromise.then((report) => {

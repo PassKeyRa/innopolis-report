@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  postgres:
+    restart: always
+    build: ./postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:?error}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?error}
+      - POSTGRES_USER=${POSTGRES_USER:?error}
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - "postgres:/var/lib/postgresql/data"
+  #math:
+  #  build: ./math
+  #  environment:
+  #    - DATABASE_URL=${DATABASE_URL:?error}
+  #    - MATH_ENV=${MATH_ENV:-prod}
+  #    - WEBSERVER_USERNAME=${WEBSERVER_USERNAME:?error}
+  #    - WEBSERVER_PASS=${WEBSERVER_PASS:?error}
+
+volumes:
+    postgres: {}

@@ -1,0 +1,15 @@
+{
+    "topic": "Discussion Topic",
+    "description": "Discussion Description",
+    "statements": [
+        {"txt": "This is a statement", "pid": "0"},
+        {"txt": "This is another statement", "pid": "1"},
+        {"txt": "This is a third statement", "pid": "2"}
+    ],
+    "participants": {
+        "0": {"address": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266", "votes": [1, -1, 1]},
+        "1": {"address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8", "votes": [-1, 1, -1]},
+        "2": {"address": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC", "votes": [1, 1, 1]},
+        "3": {"address": "0x90F79bf6EB2c4f8708e82E4817b5749b203b99CA", "votes": [1, 1, 1]}
+    }
+}

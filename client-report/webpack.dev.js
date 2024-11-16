@@ -5,7 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const serviceUrl = process.env.SERVICE_URL || 'http://localhost:5000';
+const serviceUrl = process.env.SERVICE_URL || 'http://localhost:8080';
 
 module.exports = {
   ...common,

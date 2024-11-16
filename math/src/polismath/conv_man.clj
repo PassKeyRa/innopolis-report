@@ -166,7 +166,8 @@
       (->> updated-conv
            prep-fn
            (upload-fn postgres zid math-tick)))
-    (log/info "Finished uploading math results for zid:" zid)))
+    (log/info "Finished uploading math results for zid:" zid)
+    (utils/exit 0 "Update completed")))
 
 (defn restructure-json-conv
   [conv]

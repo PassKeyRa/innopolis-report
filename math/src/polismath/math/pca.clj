@@ -76,10 +76,9 @@
     (matrix/matrix (mapv #(into [] (- % (proj-vec xs %))) data))))
 
 
-(defn rand-starting-vec [data]
-  ;; Should really throw a parallelizable random number generator in the equation here...
-  ;; With seeds fed in and persisted... XXX
-  (matrix/matrix (for [x (range (matrix/dimension-count data 1))] (rand))))
+;(defn rand-starting-vec [data]
+  ;; Using a fixed vector of ones instead of random values for deterministic behavior
+;  (repeatv (matrix/dimension-count data 1) 1))
 
 
 ; Will eventually also want to add last-pcs
@@ -95,7 +94,8 @@
      :comps
         (loop [data' cntrd-data n-comps' (min n-comps data-dim) pcs [] start-vectors start-vectors]
           ; may eventually want to return eigenvals...
-          (let [start-vector (or (first start-vectors) (rand-starting-vec data))
+          (let [;; Always use a vector of ones as starting vector instead of random
+                start-vector (or (first start-vectors) (repeatv (matrix/dimension-count data' 1) 1))
                 pc (power-iteration data' iters start-vector)
                 pcs (conj pcs pc)]
             (if (= n-comps' 1)
@@ -120,7 +120,7 @@
       (utils/apply-kwargs powerit-pca data n-comps
                     (assoc kwargs :start-vectors
                       (if start-vectors
-                        (map #(if (every? #{0 0.0} %) nil %) start-vectors)
+                        (map #(if (every? #{0 0.0} %) (repeatv (matrix/dimension-count data 1) 1) %) start-vectors)
                         nil)))))
 
 

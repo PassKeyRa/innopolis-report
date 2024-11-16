@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y python3 python3-pip
 
 WORKDIR /app
 COPY math math
-#RUN cd math && clojure -M:run -P && cd ..
+RUN cd math && clojure -M:run --help && cd ..
 
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt

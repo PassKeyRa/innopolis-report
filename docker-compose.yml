@@ -9,6 +9,11 @@ services:
       - POSTGRES_USER=${POSTGRES_USER:?error}
     volumes:
       - "postgres:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   math:
     build: ./generator
     environment:
@@ -20,7 +25,8 @@ services:
     ports:
       - '127.0.0.1:8080:8080'
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
 volumes:
     postgres: {}

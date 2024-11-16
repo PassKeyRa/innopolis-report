@@ -49,7 +49,7 @@
     "tickerName": "Matic",
     "logo": "https://web3auth.io/images/web3authlog.png"
   },
-  "base": {
+  "baseSepolia": {
     "chainNamespace": "eip155",
     "chainId": "0x14A34",
     "rpcTarget": "https://sepolia.base.org",

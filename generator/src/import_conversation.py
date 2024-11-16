@@ -4,8 +4,17 @@ import json
 
 from dotenv import load_dotenv
 from postgres import PostgresDB
+from math_calculator import calculate
 
 load_dotenv()
+
+db_host = os.getenv('POSTGRES_HOST', 'localhost')
+db_port = os.getenv('POSTGRES_PORT', 5432)
+database = os.getenv('POSTGRES_DB')
+user = os.getenv('POSTGRES_USER')
+password = os.getenv('POSTGRES_PASSWORD')
+database_url = f'postgres://{user}:{password}@{db_host}:{db_port}/{database}'
+print("database_url", database_url)
 
 if len(sys.argv) < 2:
     print("Usage: python populate_data.py <data json file>")
@@ -21,37 +30,37 @@ db = PostgresDB(
 with open(sys.argv[1], 'r') as f:
     data = json.load(f)
 
-topic = data['topic']
+topic = data['title']
 description = data['description']
 statements = data['statements']
-participants = data['participants']
+votes = data['votes']
 
-
-pids = {}
-for pid, participant in participants.items():
-    pids[int(pid)] = db.ensure_user(participant['address'])
+users = {}
+for vote in votes:
+    users[vote['voter']] = db.ensure_user(vote['voter'])
 
 zid = db.create_conversation(
-    topic="Discussion Topic",
-    description="Discussion Description",
-    owner=pids[0]
+    topic=topic,
+    description=description,
+    owner=users[votes[0]['voter']],
+    address="0x0000000000000000000000000000000000000000",
+    chain="ethereum"
 )
 
 for statement in statements:
     tid = db.create_comment(
         zid=zid,
-        uid=pids[int(statement['pid'])],
-        txt=statement['txt']
+        uid=users[votes[0]['voter']],
+        txt=statement['text']
     )
 
-for pid, participant in participants.items():
-    for i in range(len(participant['votes'])):
-        db.create_vote(
-            zid=zid,
-            uid=pids[int(pid)],
-            tid=i,
-            vote=participant['votes'][i]
-        )
+for vote in votes:
+    db.create_vote(
+        zid=zid,
+        uid=users[vote['voter']],
+        tid=vote['statement_id'],
+        vote=vote['value']
+    )
 
 conversation = db.get_conversation(zid)
 print("conversation", conversation)

@@ -43,7 +43,7 @@ const Content = ({conversation}) => {
         Report
       </p>
       <p style={{
-          fontSize: 24,
+          fontSize: 20,
           margin: 0,
         }}>
         <a

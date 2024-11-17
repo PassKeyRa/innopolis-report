@@ -91,12 +91,12 @@
   },
   "optimism": {
     "chainNamespace": "eip155",
-    "chainId": "0xA",
-    "rpcTarget": "https://rpc.ankr.com/optimism",
-    "displayName": "Optimism Mainnet",
-    "blockExplorerUrl": "https://optimistic.etherscan.io",
-    "ticker": "OP",
-    "tickerName": "OP",
+    "chainId": "0xaa37dc",
+    "rpcTarget": "https://sepolia.optimism.io",
+    "displayName": "Optimism Sepolia Testnet",
+    "blockExplorerUrl": "https://sepolia-optimism.etherscan.io",
+    "ticker": "ETH",
+    "tickerName": "ETH",
     "logo": "https://web3auth.io/images/web3authlog.png"
   },
   "cronos": {
@@ -121,10 +121,10 @@
   },
   "celo": {
     "chainNamespace": "eip155",
-    "chainId": "0xa4ec",
-    "rpcTarget": "https://rpc.ankr.com/celo",
-    "displayName": "Celo Mainnet",
-    "blockExplorerUrl": "https://explorer.celo.org",
+    "chainId": "0xaef3",
+    "rpcTarget": "https://alfajores-forno.celo-testnet.org",
+    "displayName": "Celo Alfajores Testnet",
+    "blockExplorerUrl": "https://alfajores.celoscan.io",
     "ticker": "CELO",
     "tickerName": "CELO",
     "logo": "https://web3auth.io/images/web3authlog.png"
@@ -185,6 +185,16 @@
     "rpcTarget": "https://rpc.zkatana.gelato.digital",
     "displayName": "zKatana Testnet",
     "blockExplorerUrl": "https://zkatana.blockscout.com",
+    "ticker": "ETH",
+    "tickerName": "ETH",
+    "logo": "https://web3auth.io/images/web3authlog.png"
+  },
+  "linea": {
+    "chainNamespace": "eip155",
+    "chainId": "0xe704",
+    "rpcTarget": "https://rpc.sepolia.linea.build",
+    "displayName": "Linea Sepolia Testnet",
+    "blockExplorerUrl": "https://sepolia.lineascan.build",
     "ticker": "ETH",
     "tickerName": "ETH",
     "logo": "https://web3auth.io/images/web3authlog.png"

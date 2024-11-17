@@ -4,7 +4,14 @@ import React from "react";
 import SmallLogo from "./logoSmallLong";
 import Url from "../../util/url";
 
-//const urlPrefix = Url.urlPrefix;
+const chainToBlockscoutUrl = {
+  'polygonTest': 'https://polygon.blockscout.com',
+  'celo': 'https://celo-alfajores.blockscout.com',
+  'optimism': 'https://optimism-sepolia.blockscout.com',
+  'linea': 'https://explorer.sepolia.linea.build',
+  'base': 'https://base-sepolia.blockscout.com',
+  'holesky': 'https://eth-holesky.blockscout.com'
+};
 
 function getUrlParameter(name) {
   const searchParams = new URLSearchParams(window.location.search);
@@ -13,8 +20,10 @@ function getUrlParameter(name) {
 
 const chain = getUrlParameter('chain');
 const report_id = getUrlParameter('report_id');
-const blockscoutUrl = "blockscout.com";
-const urlPrefix = chain ? `https://${chain}.${blockscoutUrl}/` : `https://${blockscoutUrl}/`;
+
+// Get the appropriate blockscout URL or use default
+const blockscoutUrl = chain ? (chainToBlockscoutUrl[chain] || 'https://blockscout.com') : 'https://blockscout.com';
+const urlPrefix = `${blockscoutUrl}/address/`;
 
 const Content = ({conversation}) => {
   return (
@@ -39,7 +48,7 @@ const Content = ({conversation}) => {
         }}>
         <a
           style={{color: "#48ae20", fontWeight: 700, textDecoration: "none"}}
-          href={`${urlPrefix + report_id}`}>{urlPrefix + report_id}
+          href={urlPrefix + report_id}>{urlPrefix + report_id}
         </a>
       </p>
     </div>

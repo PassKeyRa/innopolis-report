@@ -1,9 +1,6 @@
-# Innopolis Report
+# InnoPolis
 
-A comprehensive reporting system with generator and client components for blockchain-based discussions.
-
-
-
+A decentralized platform for community engagement and decision-making with ML-powered opinion analysis.
 
 # What is InnoPolis
 InnoPolis is a decentralized version of [pol.is](https://pol.is/home). Polis is an open-source technology for surveys (or wikisurveys, to be more precise). It is a system that allows people to submit statements about an issue, and vote on each other's statements (agree/disagree/pass). Machine learning is used to process the data and transform it into a report, where major clusters in the different points of view could be seen and analyzed. It helps with finding major points of consensus, disagreement or misunderstanding between participants.
@@ -30,112 +27,55 @@ Flexible community identification through various on-chain credentials:
 - Collective expression tools for Web3 communities
 - Community sentiment analysis and trend identification
 
-# Data
+## Data
 
 All data is stored on chain, therefore it can not be deleted or modified. There is frontend page to generate report. This frontend takes data from blockchain and generates HTML page with vote statistics. Anyone can launch docker image to generate report locally.
 
 ## Project Structure
 
-The repository consists of three main components:
+The repository consists of several components:
 
-- `generator/` - Python-based report generation service
-- `client-report/` - React-based report viewing interface
-- `InnoPolis-frontend/` - Frontend submodule (separate repository)
+- `innopolis-contracts/` - Solidity contracts responsible for storing conversations data and managing the voting process
+- `InnoPolis-frontend/` - Frontend part for interacting with the platform
+- `generator/` - Python-based report generation service. Uses the modified math module from Polis 
+- `client-report/` - React-based report viewing interface (based on original Polis `client-report` service)
+
+## Contracts
+
+Each survey (conversation) is represented by the `Conversation.sol` contract. It stores all the data about the conversation and manages the voting process. To create a new conversation, one needs to deploy the instance of this contract using the `ConversationFactory.sol` contract.
+
+In addition, a conversation can have authentication manager, which is responsible for checking if the user is authenticated to participate in the conversation. Currently, there are three template authentication managers implemented:
+- `ENSHoldingManager.sol` - Checks if the user has an ENS name
+- `ERC20HoldingManager.sol` - Checks if the user has a certain ERC20 token
+- `NFTHoldingManager.sol` - Checks if the user has a certain NFT
+
+However, one can implement their own authentication manager with any custom authentication logic.
 
 ## Generator Service
 
-### Prerequisites
+The generator service is a Python-based application that processes data from conversations on chain and generates a report. It can be run either as a CLI application or as a HTTP server.
 
-- Python 3.x
-- PostgreSQL client
-- Virtual environment (recommended)
+### Run as CLI application
 
-### Dependencies
-```python
-eth_abi==5.1.0
-Flask==3.1.0
-psycopg2-binary==2.9.10
-python-dotenv==1.0.1
-web3==7.5.0
-```
+To run the generator as a CLI application, one needs to set up the environment and install the dependencies:
 
-### Installation
 ```bash
 cd generator
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
-## Client Report
+The generator uses PostgreSQL database to store the conversations data. The `docker-compose.local.yml` file contains the configuration for the local development environment with PostgreSQL. Copy the `.env.example` file to `.env` and modify the environment variables according to your PostgreSQL database configuration.
 
-### Prerequisites
-
-- Node.js
-- NPM
-
-### Installation
+After that, run the generator with the following command:
 ```bash
-cd client-report
-npm install
+python3 main.py cli --chain <chain name> --address <conversation contract address> --output <output json file>
 ```
 
-### Available Scripts
+### Run as an HTTP server
 
-- `npm start` - Runs the webpack dev server for development
-- `npm run build:prod` - Builds static assets for production deployment
-
-## Docker Setup
-
-The project uses Docker for containerized development and deployment. Each component has its own Docker configuration.
-
-### Prerequisites
-
-- Docker
-- Docker Compose
-
-### Generator Service Docker
-
-The generator service uses a multi-stage build process:
-
-```bash
-# Build the image
-docker build -t innopolis-generator ./generator
-# Run the container
-docker run -p 5000:5000 \
--e DATABASE_URL=postgresql://user:password@host:5432/dbname \
-innopolis-generator
-```
-
-
-### Docker Compose
-
-For running the entire stack:
-```bash
-# Start all services
-docker-compose up -d
-# View logs
-docker-compose logs -f
-# Stop all services
-docker-compose down
-```
-
-Environment variables can be configured in a `.env` file:
-```text
-DATABASE_URL=postgresql://user:password@host:5432/dbname
-SERVICE_URL=http://generator:5000
-```
-
-### Docker Development Tips
-
-- Use volume mounts for development to enable hot-reloading:
-  ```yaml
-  volumes:
-    - ./generator:/app
-    - ./client-report:/app
-  ```
-- Use Docker networks to enable service communication
-- Use Docker Compose profiles for different deployment scenarios
+The full configuration including database, generator as an HTTP server, frontend and report viewer services can be run using `docker-compose.yml` file.
 
 ## Development Setup
 
@@ -151,22 +91,6 @@ SERVICE_URL=http://generator:5000
 
 3. Set up each component following their respective installation instructions
 
-4. Set up each component following their respective installation instructions
-
-## File Structure
-```
-innopolis-report/
-├── generator/
-│ ├── math/
-│ ├── requirements.txt
-│ └── test-data/
-├── client-report/
-│ ├── public/
-│ ├── src/
-│ └── package.json
-└── InnoPolis-frontend/ (submodule)
-```
-
 ## Contributing
 
 1. Fork the repository
@@ -174,16 +98,3 @@ innopolis-report/
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## Ignored Files
-
-The following files and directories are ignored in version control:
-```
-.env
-venvpycache
-.swp
-node_modules
-output
-```
-
-Make sure to properly configure these files in your development environment.
